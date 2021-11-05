@@ -1,0 +1,9 @@
+---
+Name: cita-ss-modular
+---
+Page:
+  extensions:
+    - Cita\Modular\Extension\PageExtension
+# SilverStripe\Admin\LeftAndMain:
+#   extra_requirements_javascript:
+#     - 'resources/vendor/cita/image-cropper/client/js/s3-workaround.js'
