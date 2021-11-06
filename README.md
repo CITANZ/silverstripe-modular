@@ -85,8 +85,10 @@ If you need to tweak the default block's HTML and/or change how the modular bloc
 Flex block offers you a quick way to group different blocks in a flex `row`. If you are using `Vuetify` or `Bootstrap` or something similar in your frontend stacks, then all you need to do is to set the column sizes in the CMS. Otherwise, you will have to implement the `flexbox` by yourself.
 
 ## Questions?
-Q: Why don't you... 
+Q: Why don't you...
+
 A: Pull request plz
 
 Q: I need to do such such such... so can you add this feature blah blah blah...
+
 A: This module is meant to be lightweight, so let's keep it that way. I offer the nose pick, but I don't do the pick! (bet you don't want that either!)
