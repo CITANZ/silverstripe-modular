@@ -58,6 +58,7 @@ class Block extends DataObject
      */
     private static $belongs_many_many = [
         'Pages' => Page::class,
+        'FlexBlocks' => FlexBlock::class . '.ModularBlocks'
     ];
 
     /**
@@ -104,9 +105,10 @@ class Block extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
+
         $anchor_field = $fields->fieldByName('Root.Main.Anchor');
 
-        $fields->removeByName(['Plain', 'Pages']);
+        $fields->removeByName(['Plain', 'Pages', 'FlexBlocks']);
 
         if (!empty($anchor_field)) {
             $anchor_field

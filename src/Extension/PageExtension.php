@@ -14,12 +14,12 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
 use SilverStripe\Core\ClassInfo;
 use SilverStripe\Forms\LiteralField;
-use SilverStripe\View\ViewableData;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
-
+use Cita\Modular\Traits\ModularCommonTrait;
 
 class PageExtension extends DataExtension
 {
+    use ModularCommonTrait;
     /**
      * Many_many relationship
      * @var array
@@ -49,53 +49,7 @@ class PageExtension extends DataExtension
                 'Content',
             ]);
 
-            $multi = new GridFieldAddNewMultiClass();
-
-            $classes = $this->filterBlockClasses(ClassInfo::subclassesFor(Block::class));
-            $classes = array_values($classes);
-
-            if (empty($classes)) {
-                $fields->addFieldsToTab(
-                    'Root.Main',
-                    [
-                        HeaderField::create(
-                            'ModularBlocksNotice',
-                            'Modular blocks'
-                        ),
-                        LiteralField::create(
-                            'ModularBlocks',
-                            '<p class="alert alert-warning">No block type available for this page type</p>'
-                        ),
-                    ]
-                );
-            } else {
-                $fields->addFieldToTab(
-                    'Root.Main',
-                    GridField::create(
-                        'ModularBlocks',
-                        'Modular blocks',
-                        $this->owner->ModularBlocks(),
-                        $config = GridFieldConfig_RelationEditor::create()
-                    )->setDescription('The blocks you add on this page will be listed under the page\'s main content')
-                );
-
-                $multi = $multi->setClasses($classes);
-
-                $config
-                    ->removeComponentsByType(GridFieldAddNewButton::class)
-                    ->addComponent($multi)
-                    ->addComponent(new GridFieldOrderableRows('SortOrder'));
-
-                $dataColumns = $config->getComponentByType(GridFieldDataColumns::class);
-                $dataColumns->setDisplayFields([
-                    'showID' => 'Anchor',
-                    'Type' => 'Type',
-                    'Title' => 'Title',
-                    'BlockSummary' => 'Summary',
-                ])->setFieldCasting([
-                    'Type' => 'HTMLText->RAW',
-                ]);
-            }
+            $this->makeGridField($fields);
         }
 
         return $fields;
@@ -137,12 +91,5 @@ class PageExtension extends DataExtension
         foreach ($list as $module) {
             $this->owner->Content .= $module->Plain . "\n";
         }
-    }
-
-    public function getModulars()
-    {
-        return ViewableData::create()
-            ->customise(['ModularBlocks' => $this->owner->ModularBlocks()])
-            ->renderWith('Cita\\Modular\\ModularList');
     }
 }
