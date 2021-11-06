@@ -84,9 +84,13 @@ trait ModularCommonTrait
 
             if ($this->owner instanceof FlexBlock) {
                 $config->addComponent($this->makeEditableField('ColSizeSm', 'Grid size - sm'), GridFieldDataColumns::class);
+                $config->addComponent($this->makeEditableField('ColOffsetSm', 'Offset - sm'), GridFieldDataColumns::class);
                 $config->addComponent($this->makeEditableField('ColSizeMd', 'Grid size - md'), GridFieldDataColumns::class);
+                $config->addComponent($this->makeEditableField('ColOffsetMd', 'Offset - md'), GridFieldDataColumns::class);
                 $config->addComponent($this->makeEditableField('ColSizeLg', 'Grid size - lg'), GridFieldDataColumns::class);
+                $config->addComponent($this->makeEditableField('ColOffsetLg', 'Offset - lg'), GridFieldDataColumns::class);
                 $config->addComponent($this->makeEditableField('ColSize', 'Grid size - default'), GridFieldDataColumns::class);
+                $config->addComponent($this->makeEditableField('ColOffset', 'Offset - default'), GridFieldDataColumns::class);
             }
         }
     }
