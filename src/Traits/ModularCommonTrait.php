@@ -2,7 +2,6 @@
 
 namespace Cita\Modular\Traits;
 
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\TextField;
 use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
@@ -84,18 +83,15 @@ trait ModularCommonTrait
                 'Type' => 'HTMLText->RAW',
             ]);
 
-
-            // Debug::dump($config->getComponents());
-            // die;
             if ($this->owner instanceof FlexBlock) {
+                $config->addComponent($this->makeEditableField('ColOffset', 'Offset - default'), GridFieldEditButton::class);
+                $config->addComponent($this->makeEditableField('ColSize', 'Grid size - default'), GridFieldEditButton::class);
+                $config->addComponent($this->makeEditableField('ColOffsetLg', 'Offset - lg'), GridFieldEditButton::class);
+                $config->addComponent($this->makeEditableField('ColSizeLg', 'Grid size - lg'), GridFieldEditButton::class);
+                $config->addComponent($this->makeEditableField('ColOffsetMd', 'Offset - md'), GridFieldEditButton::class);
+                $config->addComponent($this->makeEditableField('ColSizeMd', 'Grid size - md'), GridFieldEditButton::class);
                 $config->addComponent($this->makeEditableField('ColSizeSm', 'Grid size - sm'), GridFieldEditButton::class);
                 $config->addComponent($this->makeEditableField('ColOffsetSm', 'Offset - sm'), GridFieldEditButton::class);
-                $config->addComponent($this->makeEditableField('ColSizeMd', 'Grid size - md'), GridFieldEditButton::class);
-                $config->addComponent($this->makeEditableField('ColOffsetMd', 'Offset - md'), GridFieldEditButton::class);
-                $config->addComponent($this->makeEditableField('ColSizeLg', 'Grid size - lg'), GridFieldEditButton::class);
-                $config->addComponent($this->makeEditableField('ColOffsetLg', 'Offset - lg'), GridFieldEditButton::class);
-                $config->addComponent($this->makeEditableField('ColSize', 'Grid size - default'), GridFieldEditButton::class);
-                $config->addComponent($this->makeEditableField('ColOffset', 'Offset - default'), GridFieldEditButton::class);
             }
         }
     }

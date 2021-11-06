@@ -2,7 +2,6 @@
 
 namespace Cita\Modular\Model;
 
-use SilverStripe\Dev\Debug;
 use SilverStripe\View\Parsers\ShortcodeParser;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use Cita\Modular\Traits\ModularCommonTrait;
