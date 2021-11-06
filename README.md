@@ -1,4 +1,6 @@
 # CitaNZ's SilverStripe modular module
+Requires: `SilverStripe 4.0+`
+
 CitaNZ Modular is a lightweight block module which uses `ManymanyList` to link the pages and the content blocks, and builds the site with the "modulated" concept. 
 
 It not only allows the users to reuse the same blocks on different pages across site, but also give the developer a safe fall protection when a block class becomes unavailable (e.g. a deleted block subclass will fall back to `Block::cass`, instead of crashing the block edit list in the CMS).
