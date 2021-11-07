@@ -10,6 +10,9 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Versioned\Versioned;
 use SilverStripe\Forms\LiteralField;
+use Psr\SimpleCache\CacheInterface;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Core\Flushable;
 use Page;
 
 /**
@@ -18,8 +21,9 @@ use Page;
  * @package silverstripe
  * @subpackage mysite
  */
-class Block extends DataObject
+class Block extends DataObject implements Flushable
 {
+    private static $cache_enabled = false;
     /**
      * Defines the database table name
      * @var string
@@ -177,9 +181,30 @@ class Block extends DataObject
         return $this->TitleDisplayRule !== 'No output';
     }
 
+    public function getCacheInvalidator()
+    {
+        $prefix = str_replace('\\', '_' , strtolower(__CLASS__));
+
+        return $prefix . '__' . ($this->exists() ? ($this->ID . '__' . strtotime($this->LastEdited)) : time());
+    }
+
     public function Renderer($heading = 2)
     {
-        return $this->customise(['Heading' => $heading])->renderWith([$this->ClassName, Block::class]);
+        if (!$this->config()->cache_enabled) {
+            return $this->customise(['Heading' => $heading])->renderWith([$this->ClassName, Block::class]);
+        }
+
+        $cache = Injector::inst()->get(CacheInterface::class . '.ModularBlocks');
+        $key = $this->CacheInvalidator;
+
+        if ($cache->has($key)) {
+            return $cache->get($key);
+        }
+
+        $html = $this->customise(['Heading' => $heading, 'cached' => true])->renderWith([$this->ClassName, Block::class]);
+        $cache->set($key, $html);
+
+        return $html;
     }
 
     public function getTitleFieldClasses()
@@ -194,5 +219,33 @@ class Block extends DataObject
     public function forTemplate()
     {
         return $this->Renderer();
+    }
+
+    public function invalidateCache()
+    {
+        if ($this->config()->cache_enabled) {
+            Injector::inst()->get(CacheInterface::class . '.ModularBlocks')->delete($this->CacheInvalidator);
+        }
+    }
+
+    public static function flush()
+    {
+        Injector::inst()->get(CacheInterface::class . '.ModularBlocks')->clear();
+    }
+
+    /**
+     * Event handler called after writing to the database.
+     *
+     * @uses DataExtension->onAfterWrite()
+     */
+    public function onAfterWrite()
+    {
+        parent::onAfterWrite();
+
+        if ($this->FlexBlocks()->exists()) {
+            foreach ($this->FlexBlocks() as $flexblock) {
+                $flexblock->invalidateCache();
+            }
+        }
     }
 }

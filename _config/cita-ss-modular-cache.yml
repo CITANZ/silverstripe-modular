@@ -1,0 +1,8 @@
+---
+Name: cita-ss-modular-cache
+---
+SilverStripe\Core\Injector\Injector:
+  Psr\SimpleCache\CacheInterface.ModularBlocks:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: "ModularBlocks"

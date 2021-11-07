@@ -3,11 +3,12 @@
 namespace Cita\Modular\Form;
 
 use SilverStripe\Dev\Debug;
-use SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest;
+use SilverStripe\Versioned\VersionedGridFieldItemRequest;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FormAction;
+use SilverStripe\Versioned\VersionedGridFieldDetailForm;
 
-class BlockEditForm_ItemRequest extends GridFieldDetailForm_ItemRequest
+class BlockEditForm_ItemRequest extends VersionedGridFieldItemRequest
 {
     private static $allowed_actions = ['ItemEditForm'];
 
