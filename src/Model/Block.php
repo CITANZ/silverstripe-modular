@@ -2,11 +2,14 @@
 
 namespace Cita\Modular\Model;
 
+use SilverStripe\Dev\Debug;
+use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordViewer;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Versioned\Versioned;
+use SilverStripe\Forms\LiteralField;
 use Page;
 
 /**
@@ -38,6 +41,7 @@ class Block extends DataObject
     private static $db = [
         'Anchor' => 'Varchar(16)',
         'Title' => 'Varchar(128)',
+        'TitleDisplayRule' => 'Enum("Show,Sr-only,No output")',
     ];
 
     /**
@@ -106,12 +110,30 @@ class Block extends DataObject
     {
         $fields = parent::getCMSFields();
 
-        $anchor_field = $fields->fieldByName('Root.Main.Anchor');
+        // this is to hold the place for Title field, which we are going to replace with a composite field later
+        $fields->insertBefore('Title', LiteralField::create('PosHolder', ''));
 
-        $fields->removeByName(['Plain', 'Pages', 'FlexBlocks']);
+        $anchorField = $fields->fieldByName('Root.Main.Anchor');
+        $titleField = $fields->dataFieldByName('Title');
+        $ruleField = $fields->dataFieldByName('TitleDisplayRule');
 
-        if (!empty($anchor_field)) {
-            $anchor_field
+        $fields->removeByName(['Title', 'Plain', 'Pages', 'FlexBlocks', 'TitleDisplayRule']);
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            CompositeField::create(
+                [
+                    $titleField->setTitle(null),
+                    $ruleField->setTitle(null),
+                ]
+            )->setName('ModularTitleHolder')->setTitle('Title'),
+            'PosHolder'
+        );
+
+        $fields->removeByName(['PosHolder']);
+
+        if (!empty($anchorField)) {
+            $anchorField
                 ->setDescription(
                     'This will be used as the HTML\'s "id" attribute.
                     If left blank, it will fall back to use the block\'s default id' .
@@ -121,7 +143,7 @@ class Block extends DataObject
 
             $fields->addFieldToTab(
                 'Root.Configurations',
-                $anchor_field
+                $anchorField
             );
         }
 
@@ -150,8 +172,27 @@ class Block extends DataObject
         return '';
     }
 
+    public function OutputTitle()
+    {
+        return $this->TitleDisplayRule !== 'No output';
+    }
+
+    public function Renderer($heading = 2)
+    {
+        return $this->customise(['Heading' => $heading])->renderWith([$this->ClassName, Block::class]);
+    }
+
+    public function getTitleFieldClasses()
+    {
+        if (empty($this->TitleDisplayRule) || $this->TitleDisplayRule == 'Show') {
+            return '';
+        }
+
+        return strtolower($this->TitleDisplayRule);
+    }
+
     public function forTemplate()
     {
-        return $this->renderWith([$this->ClassName, Block::class]);
+        return $this->Renderer();
     }
 }

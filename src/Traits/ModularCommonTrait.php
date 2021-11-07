@@ -16,6 +16,7 @@ use Cita\Modular\Model\Block;
 use Cita\Modular\Model\FlexBlock;
 use SilverStripe\View\ViewableData;
 use SilverStripe\Forms\GridField\GridFieldEditButton;
+use Cita\Modular\Form\BlockEditForm_ItemRequest;
 
 trait ModularCommonTrait
 {
@@ -94,6 +95,11 @@ trait ModularCommonTrait
                 $config->addComponent($this->makeEditableField('ColOffsetSm', 'Offset - sm'), GridFieldEditButton::class);
             }
         }
+
+        $config
+            ->getComponentByType(GridFieldDetailForm::class)
+            ->setItemRequestClass(BlockEditForm_ItemRequest::class)
+        ;
     }
 
     private function makeEditableField($fieldName, $fieldTitle)

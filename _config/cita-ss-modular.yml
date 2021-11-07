@@ -4,6 +4,8 @@ Name: cita-ss-modular
 Page:
   extensions:
     - Cita\Modular\Extension\PageExtension
-# SilverStripe\Admin\LeftAndMain:
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_css:
+    - 'cita/silverstripe-modular: client/css/modular-admin.css'
 #   extra_requirements_javascript:
 #     - 'resources/vendor/cita/image-cropper/client/js/s3-workaround.js'

@@ -1,0 +1,26 @@
+#Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_Title_Holder {
+  margin-bottom: 0;
+}
+
+#Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_Title_Holder #Form_ItemEditForm_Title {
+  padding-right: 120px;
+}
+
+#Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_TitleDisplayRule_Holder {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  margin: 0;
+}
+
+#Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_TitleDisplayRule_Holder .form__field-holder {
+  padding: 0;
+}
+
+.cita-modular-quick-actions #Form_ItemEditForm_PreviousAndNextGroup_Holder {
+  margin-right: 0 !important;
+}
+
+.cita-modular-quick-actions .action--new {
+  display: none !important;
+}

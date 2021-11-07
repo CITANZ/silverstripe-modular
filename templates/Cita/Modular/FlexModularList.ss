@@ -11,6 +11,6 @@
             <% if $ColOffsetLg %>offset-lg-$ColOffsetLg<% end_if %>
         "
     >
-        $Me
+        $Renderer(3)
     </div>
 <% end_loop %>
