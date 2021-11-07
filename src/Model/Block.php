@@ -24,6 +24,7 @@ use Page;
 class Block extends DataObject implements Flushable
 {
     private static $cache_enabled = false;
+
     /**
      * Defines the database table name
      * @var string

@@ -9,8 +9,6 @@ use Cita\Modular\Traits\ModularCommonTrait;
 class FlexBlock extends Block
 {
     use ModularCommonTrait;
-
-    private static $cache_enabled = true;
     /**
      * Defines the database table name
      *  @var string

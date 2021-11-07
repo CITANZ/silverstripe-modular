@@ -73,6 +73,7 @@ $Modulars
 
 ## Templating
 When a new block subclass is created, the default Block class template (`Cita\Modular\Model\Block`) will be applied to keep the frontend page stick together. The next step is to create the new subclass's template (make sure it matches the correct namespace), and then flush the cache on the browser -- now all you need to do is to build your block's HTML in the template file and style it with your frontend skills.
+
 ### Overriding CitaNZ's modular default templates
 If you need to tweak the default block's HTML and/or change how the modular blocks get listed on the page, please follow the steps:
 
@@ -80,6 +81,27 @@ If you need to tweak the default block's HTML and/or change how the modular bloc
 2. flush (on the browser)
 3. inspect the `.ss` files in it
 3. do your thing
+
+## Caching
+To enable cache for a particular block type, add below to the block type's class
+```
+private static $cache_enabled = true;
+```
+
+and define the `getCacheInvalidator` function, and build the conditions for when the cache should be invalidated.
+
+Below is the default invalidator:
+
+```
+public function getCacheInvalidator()
+{
+    $prefix = str_replace('\\', '_' , strtolower(__CLASS__));
+
+    return $prefix . '__' . ($this->exists() ? ($this->ID . '__' . strtotime($this->LastEdited)) : time());
+}
+```
+
+It's looking at the block type, block id, and the last edited datetime.
 
 ## Flex Block
 Flex block offers you a quick way to group different blocks in a flex `row`. If you are using `Vuetify` or `Bootstrap` or something similar in your frontend stacks, then all you need to do is to set the column sizes in the CMS. Otherwise, you will have to implement the `flexbox` by yourself.
