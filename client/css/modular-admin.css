@@ -24,3 +24,9 @@
 .cita-modular-quick-actions .action--new {
   display: none !important;
 }
+
+
+fieldset[data-name="ModularBlocks"] .ss-gridfield-buttonrow.ss-gridfield-buttonrow-before {
+    padding-top: 0;
+    padding-bottom: 0;
+}
