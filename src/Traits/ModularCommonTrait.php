@@ -29,78 +29,96 @@ trait ModularCommonTrait
 
         $fields->removeByName(['ModularBlocks']);
 
-        $multi = new GridFieldAddNewMultiClass();
-
         $classes = $this->filterBlockClasses(ClassInfo::subclassesFor(Block::class));
         $classes = array_values($classes);
 
         if (empty($classes)) {
-            $fields->addFieldsToTab(
-                'Root.Main',
-                [
-                    HeaderField::create(
-                        'ModularBlocksNotice',
-                        'Modular blocks'
-                    ),
-                    LiteralField::create(
-                        'ModularBlocks',
-                        '<p class="alert alert-warning">No block type available for this page type</p>'
-                    ),
-                ]
-            );
-        } else {
-            $fields->addFieldToTab(
-                'Root.Main',
-                GridField::create(
-                    'ModularBlocks',
-                    'Modular blocks',
-                    $this->owner->ModularBlocks(),
-                    $config = GridFieldConfig_RelationEditor::create()
-                )->setDescription('The blocks you add on this page will be listed under the page\'s main content')
-            );
+            return $this->handleNoClassCase(&$fields);
+        }
 
-            $multi = $multi->setClasses($classes);
+        $this->buildGridFieldConfig($fields, $classes);
+    }
 
-            $config
-                ->removeComponentsByType(GridFieldAddNewButton::class)
-                ->addComponent($multi)
-                ->addComponent(new GridFieldOrderableRows('SortOrder'));
+    private function buildGridFieldConfig(&$fields, $classes)
+    {
+        $fields->addFieldToTab(
+            'Root.Main',
+            GridField::create(
+                'ModularBlocks',
+                'Modular blocks',
+                $this->owner->ModularBlocks(),
+                $config = GridFieldConfig_RelationEditor::create()
+            )->setDescription('The blocks you add on this page will be listed under the page\'s main content')
+        );
 
-            $dataColumns = $config->getComponentByType(GridFieldDataColumns::class);
+        $this->buildGridFieldConfigTable($config, $classes);
 
-            $dataFields = $this->owner instanceof FlexBlock ?
-                [
-                    'Type' => 'Type',
-                    'Title' => 'Title',
-                ] :
-                [
-                    'showID' => 'Anchor',
-                    'Type' => 'Type',
-                    'Title' => 'Title',
-                    'BlockSummary' => 'Summary',
-                ]
-            ;
-
-            $dataColumns->setDisplayFields($dataFields)->setFieldCasting([
-                'Type' => 'HTMLText->RAW',
-            ]);
-
-            if ($this->owner instanceof FlexBlock) {
-                $config->addComponent($this->makeEditableField('ColOffset', 'Offset - default'));
-                $config->addComponent($this->makeEditableField('ColSize', 'Grid size - default'));
-                $config->addComponent($this->makeEditableField('ColOffsetLg', 'Offset - lg'));
-                $config->addComponent($this->makeEditableField('ColSizeLg', 'Grid size - lg'));
-                $config->addComponent($this->makeEditableField('ColOffsetMd', 'Offset - md'));
-                $config->addComponent($this->makeEditableField('ColSizeMd', 'Grid size - md'));
-                $config->addComponent($this->makeEditableField('ColSizeSm', 'Grid size - sm'));
-                $config->addComponent($this->makeEditableField('ColOffsetSm', 'Offset - sm'));
-            }
+        if ($this->owner instanceof FlexBlock) {
+            $this->createInlineEditors($config);
         }
 
         $config
             ->getComponentByType(GridFieldDetailForm::class)
             ->setItemRequestClass(BlockEditForm_ItemRequest::class)
         ;
+    }
+
+    private function createInlineEditors(&$config)
+    {
+        $config->addComponent($this->makeEditableField('ColOffset', 'Offset - default'));
+        $config->addComponent($this->makeEditableField('ColSize', 'Grid size - default'));
+        $config->addComponent($this->makeEditableField('ColOffsetLg', 'Offset - lg'));
+        $config->addComponent($this->makeEditableField('ColSizeLg', 'Grid size - lg'));
+        $config->addComponent($this->makeEditableField('ColOffsetMd', 'Offset - md'));
+        $config->addComponent($this->makeEditableField('ColSizeMd', 'Grid size - md'));
+        $config->addComponent($this->makeEditableField('ColSizeSm', 'Grid size - sm'));
+        $config->addComponent($this->makeEditableField('ColOffsetSm', 'Offset - sm'));
+    }
+
+    private function buildGridFieldConfigTable(&$config, $classes)
+    {
+        $multi = new GridFieldAddNewMultiClass();
+        $multi = $multi->setClasses($classes);
+
+        $config
+            ->removeComponentsByType(GridFieldAddNewButton::class)
+            ->addComponent($multi)
+            ->addComponent(new GridFieldOrderableRows('SortOrder'));
+
+        $dataColumns = $config->getComponentByType(GridFieldDataColumns::class);
+
+        $dataFields = $this->owner instanceof FlexBlock ?
+            [
+                'Type' => 'Type',
+                'Title' => 'Title',
+            ] : [
+                'showID' => 'Anchor',
+                'Type' => 'Type',
+                'Title' => 'Title',
+                'BlockSummary' => 'Summary',
+            ]
+        ;
+
+        $dataColumns->setDisplayFields($dataFields)->setFieldCasting([
+            'Type' => 'HTMLText->RAW',
+        ]);
+    }
+
+    private function handleNoClassCase(&$fields)
+    {
+        $fields->addFieldsToTab(
+            'Root.Main',
+            [
+                HeaderField::create(
+                    'ModularBlocksNotice',
+                    'Modular blocks'
+                ),
+                LiteralField::create(
+                    'ModularBlocks',
+                    '<p class="alert alert-warning">No block type available for this page type</p>'
+                ),
+            ]
+        );
     }
 
     private function makeEditableField($fieldName, $fieldTitle)
@@ -145,8 +163,7 @@ trait ModularCommonTrait
             ->customise(['ModularBlocks' => $this->owner->ModularBlocks()])
             ->renderWith(
                 $this->owner instanceof FlexBlock ?
-                'Cita\\Modular\\FlexModularList' :
-                'Cita\\Modular\\ModularList'
+                'Cita\\Modular\\FlexModularList' : 'Cita\\Modular\\ModularList'
             )
         ;
     }
