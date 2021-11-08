@@ -144,9 +144,10 @@ trait ModularCommonTrait
         return ViewableData::create()
             ->customise(['ModularBlocks' => $this->owner->ModularBlocks()])
             ->renderWith(
-            $this->owner instanceof FlexBlock ?
-            'Cita\\Modular\\FlexModularList' :
-            'Cita\\Modular\\ModularList'
-        );
+                $this->owner instanceof FlexBlock ?
+                'Cita\\Modular\\FlexModularList' :
+                'Cita\\Modular\\ModularList'
+            )
+        ;
     }
 }
