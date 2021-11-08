@@ -5,6 +5,7 @@ namespace Cita\Modular\Model;
 use SilverStripe\View\Parsers\ShortcodeParser;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use Cita\Modular\Traits\ModularCommonTrait;
+use SilverStripe\Forms\FieldList;
 
 class FlexBlock extends Block
 {

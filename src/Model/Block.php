@@ -2,7 +2,6 @@
 
 namespace Cita\Modular\Model;
 
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordViewer;
 use SilverStripe\Forms\GridField\GridField;
@@ -13,6 +12,7 @@ use SilverStripe\Forms\LiteralField;
 use Psr\SimpleCache\CacheInterface;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Core\Flushable;
+use SilverStripe\Forms\FieldList;
 use Page;
 
 /**

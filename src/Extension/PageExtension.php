@@ -2,19 +2,9 @@
 
 namespace Cita\Modular\Extension;
 
-use SilverStripe\Forms\HeaderField;
-use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
-use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataExtension;
 use Cita\Modular\Model\Block;
-use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
-use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
-use SilverStripe\Forms\GridField\GridFieldAddNewButton;
-use SilverStripe\Core\ClassInfo;
-use SilverStripe\Forms\LiteralField;
-use SilverStripe\Forms\GridField\GridFieldDataColumns;
 use Cita\Modular\Traits\ModularCommonTrait;
 
 class PageExtension extends DataExtension

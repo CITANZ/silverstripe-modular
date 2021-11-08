@@ -2,8 +2,9 @@
 
 namespace Cita\Modular\Traits;
 
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\HeaderField;
 use Symbiote\GridFieldExtensions\GridFieldAddNewMultiClass;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 use SilverStripe\Forms\GridField\GridFieldAddNewButton;
@@ -16,7 +17,6 @@ use SilverStripe\Core\ClassInfo;
 use Cita\Modular\Model\Block;
 use Cita\Modular\Model\FlexBlock;
 use SilverStripe\View\ViewableData;
-use SilverStripe\Forms\GridField\GridFieldEditButton;
 use Cita\Modular\Form\BlockEditForm_ItemRequest;
 
 trait ModularCommonTrait
