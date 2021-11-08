@@ -33,7 +33,8 @@ trait ModularCommonTrait
         $classes = array_values($classes);
 
         if (empty($classes)) {
-            return $this->handleNoClassCase(&$fields);
+            $this->handleNoClassCase(&$fields);
+            return;
         }
 
         $this->buildGridFieldConfig($fields, $classes);
