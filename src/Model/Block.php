@@ -224,9 +224,7 @@ class Block extends DataObject implements Flushable
 
     public function invalidateCache()
     {
-        if ($this->config()->cache_enabled) {
-            Injector::inst()->get(CacheInterface::class . '.ModularBlocks')->delete($this->CacheInvalidator);
-        }
+        Injector::inst()->get(CacheInterface::class . '.ModularBlocks')->delete($this->CacheInvalidator);
     }
 
     public static function flush()
