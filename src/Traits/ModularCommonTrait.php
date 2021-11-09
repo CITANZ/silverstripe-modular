@@ -33,7 +33,7 @@ trait ModularCommonTrait
         $classes = array_values($classes);
 
         if (empty($classes)) {
-            $this->handleNoClassCase(&$fields);
+            $this->handleNoClassCase($fields);
             return;
         }
 
