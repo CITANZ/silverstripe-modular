@@ -1,3 +1,7 @@
+#Form_ItemEditForm_ModularTitleHolder {
+  position: relative;
+}
+
 #Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_Title_Holder {
   margin-bottom: 0;
 }
@@ -7,14 +11,27 @@
 }
 
 #Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_TitleDisplayRule_Holder {
+  display: block;
   position: absolute;
+  width: 100px;
   top: 0;
   right: 20px;
   margin: 0;
 }
 
+@media (max-width: 991px) {
+  #Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_TitleDisplayRule_Holder {
+    right: 0;
+  }
+}
+
 #Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_TitleDisplayRule_Holder .form__field-holder {
   padding: 0;
+}
+
+#Form_ItemEditForm_ModularTitleHolder_Holder #Form_ItemEditForm_TitleDisplayRule_Holder .chosen-container.chosen-container-single {
+  height: 36px;
+  display: block;
 }
 
 .cita-modular-quick-actions #Form_ItemEditForm_PreviousAndNextGroup_Holder {
